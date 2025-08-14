@@ -16,9 +16,6 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link href="">
-                        Document
-                    </x-nav-link>
                 </div>
             </div>
 
@@ -82,9 +79,9 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="">
+            {{-- <x-responsive-nav-link href="">
                 Document
-            </x-responsive-nav-link>
+            </x-responsive-nav-link> --}}
         </div>
     </div>
 </nav>

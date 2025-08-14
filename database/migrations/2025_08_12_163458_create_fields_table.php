@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('fields', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('doc_id');
+            $table->string('name');
+            $table->text('value');
+            $table->string('ttd');
             $table->timestamps();
         });
     }
