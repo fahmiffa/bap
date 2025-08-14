@@ -1,0 +1,9 @@
+{
+    auto_https off
+}
+
+:8001 {
+    root * /app/public
+    php_server
+    file_server
+}

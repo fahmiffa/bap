@@ -44,7 +44,9 @@
                     <td>{{ $item->value }}</td>
                     <td>{{ $item->name }}</td>
                     <td>
-                        <img src="{{ public_path('storage/' . $item->ttd) }}" alt="Tanda Tangan" width="80%">
+                        @if($item->ttd)
+                            <img src="{{ public_path('storage/' . $item->ttd) }}" alt="Tanda Tangan" width="80%">
+                        @endif
                     </td>
                 </tr>
             @endforeach
