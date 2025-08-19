@@ -25,7 +25,6 @@
 </head>
 
 <body>
-    <h3>{{ $title }}</h3>
     <table>
         <thead>
             <tr>
@@ -36,6 +35,7 @@
             </tr>
         </thead>
         <tbody>
+            @for ($i = 0; $i < 10; $i++)
             @foreach ($items as $item)
                 <tr>
                     <td>
@@ -48,6 +48,7 @@
                     </td>
                 </tr>
             @endforeach
+            @endfor
         </tbody>
     </table>
 </body>

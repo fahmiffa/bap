@@ -5,13 +5,31 @@ use App\Http\Controllers\Home;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/clear', function () {
+    // Artisan::call('db:wipe');
+    // Artisan::call('migrate');
+    // Artisan::call('db:seed');
+    Artisan::call('optimize:clear');
+    Artisan::call('storage:link');
+    File::put(storage_path('logs/laravel.log'), '');
+    return 'Log cleared';
+});
+
+Route::get('/docs/{file}', function ($file) {
+    $path = storage_path("app/public/{$file}");
+    abort_unless(file_exists($path), 404);
+
+    return response()->file($path, [
+        'Content-Type' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    ]);
+});
+
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('home');
 });
 
-Route::get('/link/{id}', [Home::class, 'showLink'])->name('link.show'); 
-Route::post('/sign/{id}', [Home::class, 'signLink'])->name('sign.store'); 
-
+Route::get('/link/{id}', [Home::class, 'showLink'])->name('link.show');
+Route::post('/sign/{id}', [Home::class, 'signLink'])->name('sign.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

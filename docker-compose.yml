@@ -1,0 +1,18 @@
+services:
+  app:
+    build : .
+    container_name: ba
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "8080:80"
+    command: php -S 0.0.0.0:80 -t public
+    environment:
+      - APP_ENV=local
+      - DB_CONNECTION=mysql
+      - DB_HOST=192.168.18.22
+      - DB_PORT=3306
+      - DB_DATABASE=ba
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
