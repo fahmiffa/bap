@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Doc;
 use App\Models\Field;
+use App\Models\Paraf;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
@@ -11,37 +12,44 @@ use Illuminate\Support\Str;
 use PDF;
 use PhpOffice\PhpWord\TemplateProcessor;
 use setasign\Fpdi\Fpdi;
-use PhpOffice\PhpWord\IOFactory;
 
 class Home extends Controller
 {
     public function index()
     {
         $action = "DATA";
-        $doc = Doc::with('users')->get();
-        return view('doc.document', compact('doc','action'));
+        $doc    = Doc::with('users')->get();
+        return view('doc.document', compact('doc', 'action'));
     }
 
     public function create()
     {
         $action = "Tambah Data";
-        return view('doc.form',compact('action'));
+        return view('doc.form', compact('action'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             "name" => "required",
-            'doc' => 'required|mimes:docx|max:10240',
+            'doc'  => 'required|mimes:docx|max:10240',
         ]);
+
 
         $path = $request->file('doc')->store('docs', 'public');
 
         $doc            = new Doc;
-        $doc->name      = $request->doc;
+        $doc->nomor     = $request->nomor;
+        $doc->tanggal   = $request->tanggal;
+        $doc->as_head   = $request->as_head;
+        $doc->name_head = $request->name_head;
+        $doc->as_name   = $request->as_name;
+        $doc->nip       = $request->nip;
         $doc->file_path = $path;
         $doc->save();
 
+        $paraf = $request->as;
+        $nama  = $request->nama;
         $users = $request->name;
         $note  = $request->note;
 
@@ -53,7 +61,15 @@ class Home extends Controller
             $field->save();
         }
 
-        return back();
+        for ($i = 0; $i < count($paraf); $i++) {
+            $field         = new Paraf;
+            $field->doc_id = $doc->id;
+            $field->name   = $nama[$i];
+            $field->as     = $paraf[$i];
+            $field->save();
+        }
+
+        return redirect()->route('dashboard');
 
     }
 
@@ -67,7 +83,6 @@ class Home extends Controller
         return back();
     }
 
-
     public function update()
     {
 
@@ -75,7 +90,7 @@ class Home extends Controller
 
     public function edit()
     {
-        
+
     }
 
     public function previewn($id)
@@ -135,7 +150,7 @@ class Home extends Controller
 
         $fileUrl = asset('storage/output.docx');
 
-        return view('doc',compact('fileUrl'));
+        return view('doc', compact('fileUrl'));
     }
 
     public function previews($id)

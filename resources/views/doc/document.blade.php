@@ -8,8 +8,8 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="flex justify-between items-center px-6">
-                <div class="my-3 font-semibold text-xl">{{$action}}</div>
-                <a href="{{route('doc.create')}}" 
+                <div class="my-3 font-semibold text-xl">{{ $action }}</div>
+                <a href="{{ route('document.create') }}"
                     class="cursor-pointer my-3 bg-gray-500 text-sm hover:bg-gray-700 text-white font-bold py-2 px-3 rounded-2xl focus:outline-none focus:shadow-outline">
                     Tambah
                 </a>
@@ -21,7 +21,8 @@
                             <thead>
                                 <tr class="bg-gray-500 text-left text-white">
                                     <th class="px-4 py-2">No</th>
-                                    <th class="px-4 py-2">Name</th>
+                                    <th class="px-4 py-2">Nomor</th>
+                                    <th class="px-4 py-2">Tanggal</th>
                                     <th class="px-4 py-2">Users</th>
                                     <th class="px-4 py-2">Action</th>
                                 </tr>
@@ -30,14 +31,22 @@
                                 @foreach ($doc as $row)
                                     <tr class="border-t border-gray-300">
                                         <td class="px-4 py-2">{{ $loop->iteration }}</td>
-                                        <td class="px-4 py-2">{{ $row->name }}</td>
+                                        <td class="px-4 py-2">{{ $row->nomor }}</td>
+                                        <td class="px-4 py-2">{{ $row->tanggal }}</td>
                                         <td class="px-4 py-2">
-                                            <ul
-                                                class="list-disc list-inside space-y-2 text-gray-700 text-nowrap">
-                                                @foreach ($row->users as $item)
-                                                    <li>{{ $item->name }}</li>
-                                                @endforeach
-                                            </ul>
+                                            <div class="flex items-start gap-2">
+                                                <ul class="list-disc list-inside space-y-2 text-gray-700 text-nowrap">
+                                                    @foreach ($row->users as $item)
+                                                        <li>{{ $item->name }}</li>
+                                                    @endforeach
+                                                </ul>
+
+                                                <ul class="list-disc list-inside space-y-2 text-gray-700 text-nowrap">
+                                                    @foreach ($row->paraf as $item)
+                                                        <li>{{ $item->name }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
                                         </td>
                                         <td class="px-4 py-2">
                                             <div x-data="{ open: false }">
@@ -46,9 +55,8 @@
                                                         target="_blank">
                                                         <div class="text-red-800 size-5">
                                                             <!-- icon -->
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                width="24" height="24"
-                                                                viewBox="0 0 24 24" fill="none"
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
                                                                 stroke="currentColor" stroke-width="2"
                                                                 stroke-linecap="round" stroke-linejoin="round"
                                                                 class="lucide lucide-file">
@@ -58,8 +66,7 @@
                                                             </svg>
                                                         </div>
                                                     </a>
-                                                    <a href="#modal-{{ $row->id }}"
-                                                        @click.prevent="open = true"
+                                                    <a href="#modal-{{ $row->id }}" @click.prevent="open = true"
                                                         class="block text-blue-600 underline hover:text-blue-800">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                             height="24" viewBox="0 0 24 24" fill="none"
@@ -80,8 +87,7 @@
                                                     x-transition @click.self="open = false"
                                                     @keydown.escape.window="open = false">
                                                     @if ($row->link)
-                                                        <div
-                                                            class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+                                                        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
                                                             <h2 class="text-lg font-semibold mb-4">
                                                                 Link
                                                                 Dokumen
@@ -106,8 +112,7 @@
                                                             </div>
                                                         </div>
                                                     @else
-                                                        <div
-                                                            class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+                                                        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
                                                             <h2 class="text-lg font-semibold mb-4">Generate
                                                                 Link
                                                                 Dokumen
@@ -117,8 +122,7 @@
                                                                 @csrf
 
                                                                 <div class="flex justify-start space-x-2">
-                                                                    <button type="button"
-                                                                        @click="open = false"
+                                                                    <button type="button" @click="open = false"
                                                                         class="px-4 py-2 bg-gray-300 rounded-xl">Batal</button>
                                                                     <button type="submit"
                                                                         class="px-4 py-2 bg-gray-800 text-white rounded-xl">Generate</button>

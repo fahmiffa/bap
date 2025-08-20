@@ -10,4 +10,8 @@ class Doc extends Model
     {
         return $this->hasMany(Field::class, 'doc_id');
     }
+    public function paraf()
+    {
+        return $this->hasMany(Paraf::class, 'doc_id');
+    }
 }

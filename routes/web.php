@@ -6,9 +6,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear', function () {
-    // Artisan::call('db:wipe');
-    // Artisan::call('migrate');
-    // Artisan::call('db:seed');
+    Artisan::call('db:wipe');
+    Artisan::call('migrate');
+    Artisan::call('db:seed');
     Artisan::call('optimize:clear');
     Artisan::call('storage:link');
     File::put(storage_path('logs/laravel.log'), '');
