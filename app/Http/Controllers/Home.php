@@ -92,11 +92,10 @@ class Home extends Controller
         $users = $request->name;
         $note  = $request->note;
         $pile  = $request->file('doc');
-        $doc = Doc::where(DB::raw('md5(id)'), $id)->firstOrFail();
+        $doc   = Doc::where(DB::raw('md5(id)'), $id)->firstOrFail();
 
-        if($pile)
-        {
-            $path = $pile->store('docs', 'public');
+        if ($pile) {
+            $path           = $pile->store('docs', 'public');
             $doc->file_path = $path;
         }
 
@@ -108,7 +107,7 @@ class Home extends Controller
         $doc->nip       = $request->nip;
         $doc->save();
 
-        Field::where('doc_id',$doc->id)->delete();
+        Field::where('doc_id', $doc->id)->delete();
         for ($i = 0; $i < count($users); $i++) {
             $field         = new Field;
             $field->doc_id = $doc->id;
@@ -117,7 +116,7 @@ class Home extends Controller
             $field->save();
         }
 
-        Paraf::where('doc_id',$doc->id)->delete();
+        Paraf::where('doc_id', $doc->id)->delete();
         for ($i = 0; $i < count($paraf); $i++) {
             $field         = new Paraf;
             $field->doc_id = $doc->id;
@@ -147,10 +146,8 @@ class Home extends Controller
         return view('doc.form', compact('action', 'doc', 'dinas', 'paraf'));
     }
 
-    public function preview($id)
+    private static function link($doc)
     {
-
-        $doc               = Doc::where(DB::raw('md5(id)'), $id)->firstOrFail();
         $pdfPath           = storage_path('app/public/' . $doc->file_path);
         $templateProcessor = new TemplateProcessor($pdfPath);
 
@@ -196,13 +193,22 @@ class Home extends Controller
 
         $fileUrl = asset('storage/' . $name);
 
+        return $fileUrl;
+
+    }
+
+    public function preview($id)
+    {
+        $doc     = Doc::where(DB::raw('md5(id)'), $id)->firstOrFail();
+        $fileUrl = Home::link($doc);
         return view('doc', compact('fileUrl'));
     }
 
     public function showLink($id)
     {
-        $doc = Doc::where(DB::raw('md5(link)'), $id)->first();
-        return view('ttd', compact('doc'));
+        $doc     = Doc::where(DB::raw('md5(link)'), $id)->firstOrFail();
+        $fileUrl = Home::link($doc);
+        return view('ttd', compact('doc','fileUrl'));
     }
 
     public function signLink(Request $request, $id)
