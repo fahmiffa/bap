@@ -63,9 +63,10 @@ export default function pdfUploader({ maxSizeMB = 5 } = {}) {
         },
     };
 }
-export function userForm() {
+export function userForm(initialRows = [{ note: "", name: "" }]) {
+    console.log(initialRows)
     return {
-        rows: [{ note: "", name: "" }],
+         rows: initialRows,
 
         addRow() {
             this.rows.push({ note: "", name: "" });

@@ -9,10 +9,7 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use PDF;
 use PhpOffice\PhpWord\TemplateProcessor;
-use setasign\Fpdi\Fpdi;
-use Intervention\Image\Facades\Image;
 
 class Home extends Controller
 {
@@ -33,9 +30,8 @@ class Home extends Controller
     {
         $request->validate([
             "name" => "required",
-            'doc'  => 'required|mimes:docx|max:10240',
+            'doc'  => 'required|mimes:docx|max:2048',
         ]);
-
 
         $path = $request->file('doc')->store('docs', 'public');
 
@@ -88,26 +84,74 @@ class Home extends Controller
     {
         $request->validate([
             "name" => "required",
-            'doc'  => 'nullable|mimes:docx|max:10240',
+            'doc'  => 'nullable|mimes:docx|max:2048',
         ]);
 
-        // dd($request->input());
+        $paraf = $request->as;
+        $nama  = $request->nama;
+        $users = $request->name;
+        $note  = $request->note;
+        $pile  = $request->file('doc');
+        $doc = Doc::where(DB::raw('md5(id)'), $id)->firstOrFail();
 
-        return back();
+        if($pile)
+        {
+            $path = $pile->store('docs', 'public');
+            $doc->file_path = $path;
+        }
+
+        $doc->nomor     = $request->nomor;
+        $doc->tanggal   = $request->tanggal;
+        $doc->as_head   = $request->as_head;
+        $doc->name_head = $request->name_head;
+        $doc->as_name   = $request->as_name;
+        $doc->nip       = $request->nip;
+        $doc->save();
+
+        Field::where('doc_id',$doc->id)->delete();
+        for ($i = 0; $i < count($users); $i++) {
+            $field         = new Field;
+            $field->doc_id = $doc->id;
+            $field->name   = $users[$i];
+            $field->value  = $note[$i];
+            $field->save();
+        }
+
+        Paraf::where('doc_id',$doc->id)->delete();
+        for ($i = 0; $i < count($paraf); $i++) {
+            $field         = new Paraf;
+            $field->doc_id = $doc->id;
+            $field->name   = $nama[$i];
+            $field->as     = $paraf[$i];
+            $field->save();
+        }
+
+        return redirect()->route('dashboard');
     }
 
     public function edit($id)
     {
-        $doc     = Doc::where(DB::raw('md5(id)'), $id)->firstOrFail();
-        $action  = "Edit Data";
-        return view('doc.form', compact('action','doc'));
+        $doc = Doc::where(DB::raw('md5(id)'), $id)->firstOrFail();
+
+        $dinas = $doc->users->map(fn($user) => [
+            'name' => $user->name,
+            'note' => $user->value,
+        ]);
+
+        $paraf = $doc->paraf->map(fn($user) => [
+            'name' => $user->name,
+            'note' => $user->as,
+        ]);
+
+        $action = "Edit Data";
+        return view('doc.form', compact('action', 'doc', 'dinas', 'paraf'));
     }
 
     public function preview($id)
     {
 
-        $doc     = Doc::where(DB::raw('md5(id)'), $id)->firstOrFail();
-        $pdfPath = storage_path('app/public/' . $doc->file_path);
+        $doc               = Doc::where(DB::raw('md5(id)'), $id)->firstOrFail();
+        $pdfPath           = storage_path('app/public/' . $doc->file_path);
         $templateProcessor = new TemplateProcessor($pdfPath);
 
         $templateProcessor->setValue("nomor", $doc->nomor);
@@ -123,18 +167,15 @@ class Home extends Controller
             $templateProcessor->setValue("no#{$i}", $i);
             $templateProcessor->setValue("val#{$i}", $row->value);
             $templateProcessor->setValue("nama#{$i}", $row->name);
-            if($row->ttd)
-            {
+            if ($row->ttd) {
                 $ttdPath = storage_path('app/public/' . $row->ttd);
                 $templateProcessor->setImageValue("ttd#{$i}", [
-                        'path' => $ttdPath,
-                        'width' => 300,
-                        'height' => 100,
-                        'ratio' => true,
-                    ]);
-            }
-            else
-            {
+                    'path'   => $ttdPath,
+                    'width'  => 300,
+                    'height' => 100,
+                    'ratio'  => true,
+                ]);
+            } else {
                 $templateProcessor->setValue("ttd#{$i}", $row->ttd);
 
             }
@@ -149,11 +190,11 @@ class Home extends Controller
             $templateProcessor->setValue("paraf#{$i}", $row->paraf);
         }
 
-        $name = $doc->nomor.'-'.date("YmdHis").'.docx';
-        $outputPath = storage_path('app/public/'.$name);
+        $name       = $doc->nomor . '-' . date("YmdHis") . '.docx';
+        $outputPath = storage_path('app/public/' . $name);
         $templateProcessor->saveAs($outputPath);
 
-        $fileUrl = asset('storage/'.$name);
+        $fileUrl = asset('storage/' . $name);
 
         return view('doc', compact('fileUrl'));
     }

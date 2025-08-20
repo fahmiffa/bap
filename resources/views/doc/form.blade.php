@@ -66,24 +66,21 @@
                                 <x-input-error :messages="$errors->get('nip')" class="mt-2" />
                             </div>
                         </div>
-                        <div class="mb-4" x-data="userForm()">
+                        <div class="mb-4" x-data="userForm({{json_encode($dinas)}})">
                             <x-input-label for="dinas" :value="__('DINAS')" />
                             <div class="space-y-4">
                                 <template x-for="(row, index) in rows" :key="index">
                                     <div class="flex gap-3 items-start">
-                                        <!-- Name -->
                                         <div class="flex-1">
                                             <textarea type="text" x-model="row.note" :name="`note[${index}]`" class="mt-1 w-full rounded-2xl border px-3 py-2"
                                                 placeholder="Catatan"></textarea>
                                         </div>
 
-                                        <!-- Email -->
                                         <div class="flex-1">
                                             <input type="text" x-model="row.name" :name="`name[${index}]`"
                                                 class="mt-1 w-full rounded-2xl border px-3 py-2" placeholder="Nama">
                                         </div>
 
-                                        <!-- Remove Button -->
                                         <button type="button" @click="removeRow(index)" class="p-2  text-red-600">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -97,7 +94,6 @@
                                         </button>
                                     </div>
                                 </template>
-
                                 <div>
                                     <button type="button" @click="addRow()" class="p-2 text-sm  text-gray-800 ">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -113,24 +109,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-4" x-data="userForm()">
+                        <div class="mb-4" x-data="userForm({{json_encode($paraf)}})">
                             <x-input-label for="paraf" :value="__('PARAF')" />
                             <div class="space-y-4">
                                 <template x-for="(row, index) in rows" :key="index">
                                     <div class="flex gap-3 items-start">
-                                        <!-- Name -->
                                         <div class="flex-1">
                                             <input type="text" x-model="row.note" :name="`as[${index}]`"
                                                 class="mt-1 w-full rounded-2xl border px-3 py-2" placeholder="As">
                                         </div>
-
-                                        <!-- Email -->
                                         <div class="flex-1">
                                             <input type="text" x-model="row.name" :name="`nama[${index}]`"
                                                 class="mt-1 w-full rounded-2xl border px-3 py-2" placeholder="Nama">
                                         </div>
-
-                                        <!-- Remove Button -->
                                         <button type="button" @click="removeRow(index)" class="p-2  text-red-600">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -144,7 +135,6 @@
                                         </button>
                                     </div>
                                 </template>
-
                                 <div>
                                     <button type="button" @click="addRow()" class="p-2 text-sm  text-gray-800 ">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
