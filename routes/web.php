@@ -15,14 +15,6 @@ Route::get('/clear', function () {
     return 'Log cleared';
 });
 
-Route::get('/docs/{file}', function ($file) {
-    $path = storage_path("app/public/{$file}");
-    abort_unless(file_exists($path), 404);
-
-    return response()->file($path, [
-        'Content-Type' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    ]);
-});
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('home');
@@ -37,6 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/dashboard', [Home::class, 'index'])->name('dashboard');
+    Route::post('/create-doc', [Home::class, 'store'])->name('doc.store');
+    Route::get('/edit-doc/{id}', [Home::class, 'edit'])->name('doc.edit');
+    Route::post('/update-doc/{id}', [Home::class, 'update'])->name('doc.update');
     Route::get('/preview/doc/{id}', [Home::class, 'preview'])->name('document.preview');
     Route::get('/document-tambah', [Home::class, 'create'])->name('document.create');
     Route::post('/document', [Home::class, 'store'])->name('document.store');

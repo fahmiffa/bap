@@ -17,23 +17,25 @@ class Home extends Controller
 {
     public function index()
     {
+        $action = "DATA";
         $doc = Doc::with('users')->get();
-        return view('doc.document', compact('doc'));
+        return view('doc.document', compact('doc','action'));
     }
 
     public function create()
     {
-        return view('doc.form');
+        $action = "Tambah Data";
+        return view('doc.form',compact('action'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            "doc" => "required",
-            'pdf' => 'required|mimes:pdf|max:10240',
+            "name" => "required",
+            'doc' => 'required|mimes:docx|max:10240',
         ]);
 
-        $path = $request->file('pdf')->store('pdfs', 'public');
+        $path = $request->file('doc')->store('docs', 'public');
 
         $doc            = new Doc;
         $doc->name      = $request->doc;
@@ -63,6 +65,17 @@ class Home extends Controller
         $doc->save();
 
         return back();
+    }
+
+
+    public function update()
+    {
+
+    }
+
+    public function edit()
+    {
+        
     }
 
     public function previewn($id)

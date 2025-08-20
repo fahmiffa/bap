@@ -11,17 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('docs', function (Blueprint $table) {
+        Schema::create('parafs', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('doc_id');
             $table->string('name');
-            $table->string('as_head');
-            $table->string('as_name');
-            $table->string('name_head');
-            $table->string('nip');
-            $table->string('file_path');
-            $table->string('nomor');
-            $table->string('tanggal');
-            $table->integer('status')->default(0);
+            $table->string('as');
+            $table->string('paraf')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('docs');
+        Schema::dropIfExists('parafs');
     }
 };
