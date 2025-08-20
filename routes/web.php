@@ -6,9 +6,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear', function () {
-    Artisan::call('db:wipe');
-    Artisan::call('migrate');
-    Artisan::call('db:seed');
+    // Artisan::call('db:wipe');
+    // Artisan::call('migrate');
+    // Artisan::call('db:seed');
     Artisan::call('optimize:clear');
     Artisan::call('storage:link');
     File::put(storage_path('logs/laravel.log'), '');
@@ -29,9 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/dashboard', [Home::class, 'index'])->name('dashboard');
-    Route::post('/create-doc', [Home::class, 'store'])->name('doc.store');
-    Route::get('/edit-doc/{id}', [Home::class, 'edit'])->name('doc.edit');
-    Route::post('/update-doc/{id}', [Home::class, 'update'])->name('doc.update');
+    Route::get('/edit-doc/{id}', [Home::class, 'edit'])->name('document.edit');
+    Route::post('/update-doc/{id}', [Home::class, 'update'])->name('document.update');
     Route::get('/preview/doc/{id}', [Home::class, 'preview'])->name('document.preview');
     Route::get('/document-tambah', [Home::class, 'create'])->name('document.create');
     Route::post('/document', [Home::class, 'store'])->name('document.store');

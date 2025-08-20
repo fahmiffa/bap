@@ -15,8 +15,10 @@
 </head>
 
 <body>
-    <iframe src="https://docs.google.com/gview?url={{ urlencode($fileUrl) }}&embedded=true"
-            style="width:50%; height:600px;" frameborder="0">
+
+    <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}"
+        width="100%" height="600px" frameborder="0">
     </iframe>
+
 </body>
 </html>

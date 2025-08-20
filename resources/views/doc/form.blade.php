@@ -10,18 +10,22 @@
             <div class="my-3 font-semibold">{{ $action }}</div>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 w-100">
-                    <form action="{{ route('document.store') }}" method="POST" enctype="multipart/form-data">
+                    @isset($doc)
+                      <form action="{{ route('document.update',['id'=>md5($doc->id)]) }}" method="POST" enctype="multipart/form-data">
+                    @else
+                        <form action="{{ route('document.store') }}" method="POST" enctype="multipart/form-data">
+                    @endisset
                         @csrf
                         <div class="grid md:grid-cols-2 grid-cols-1 gap-2 mb-3">
                             <div class="mb-4">
                                 <x-input-label for="nomor" :value="__('Nomor')" />
-                                <x-text-input class="block w-full" type="text" name="nomor" :value="old('nomor')"
+                                <x-text-input class="block w-full" type="text" name="nomor" :value="old('nomor',isset($doc) ? $doc->nomor : null)"
                                     required autofocus />
                                 <x-input-error :messages="$errors->get('nomor')" class="mt-2" />
                             </div>
                             <div class="mb-4">
                                 <x-input-label for="tanggal" :value="__('Tanggal')" />
-                                <x-text-input class="block w-full" type="date" name="tanggal" :value="old('tanggal')"
+                                <x-text-input class="block w-full" type="date" name="tanggal" :value="old('tanggal',isset($doc) ? $doc->tanggal : null)"
                                     required autofocus />
                                 <x-input-error :messages="$errors->get('tanggal')" class="mt-2" />
                             </div>
@@ -31,7 +35,7 @@
                                     class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:border-0
                                     file:text-sm file:font-semibold file:bg-blue-50 file:text-gray-700 
                                     hover:file:bg-blue-100 cursor-pointer ring-2 border-gray-500 focus:outline-none focus:border-gray-500 focus:ring-gray-500 shadow-sm block mt-1 w-full rounded-2xl"
-                                    required>
+                                    >
 
                                 <x-input-error :messages="$errors->get('pdf')" class="mt-2" />
                             </div>
@@ -39,25 +43,25 @@
                         <div class="grid md:grid-cols-2 grid-cols-1 gap-2">
                             <div class="mb-4">
                                 <x-input-label for="as_head" :value="__('AS HEAD')" />
-                                <x-text-input class="block w-full" type="text" name="as_head" :value="old('as_head')"
+                                <x-text-input class="block w-full" type="text" name="as_head" :value="old('as_head',isset($doc) ? $doc->as_head : null)"
                                     required autofocus />
                                 <x-input-error :messages="$errors->get('as_head')" class="mt-2" />
                             </div>
                             <div class="mb-4">
                                 <x-input-label for="as_name" :value="__('AS NAME')" />
-                                <x-text-input class="block w-full" type="text" name="as_name" :value="old('as_name')"
+                                <x-text-input class="block w-full" type="text" name="as_name" :value="old('as_name',isset($doc) ? $doc->as_name : null)"
                                     required autofocus />
                                 <x-input-error :messages="$errors->get('as_name')" class="mt-2" />
                             </div>
                             <div class="mb-4">
                                 <x-input-label for="name_head" :value="__('Name Head')" />
-                                <x-text-input class="block w-full" type="text" name="name_head" :value="old('name_head')"
+                                <x-text-input class="block w-full" type="text" name="name_head" :value="old('name_head',isset($doc) ? $doc->name_head : null)"
                                     required autofocus />
                                 <x-input-error :messages="$errors->get('name_head')" class="mt-2" />
                             </div>
                             <div class="mb-4">
                                 <x-input-label for="nip" :value="__('NIP')" />
-                                <x-text-input class="block w-full" type="text" name="nip" :value="old('nip')"
+                                <x-text-input class="block w-full" type="text" name="nip" :value="old('nip',isset($doc) ? $doc->nip : null)"
                                     required autofocus />
                                 <x-input-error :messages="$errors->get('nip')" class="mt-2" />
                             </div>

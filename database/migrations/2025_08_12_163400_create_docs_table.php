@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('file_path');
             $table->string('nomor');
             $table->string('tanggal');
+            $table->string('link')->nullable();
             $table->integer('status')->default(0);
             $table->timestamps();
         });
