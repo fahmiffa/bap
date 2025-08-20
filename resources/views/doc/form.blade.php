@@ -66,7 +66,7 @@
                                 <x-input-error :messages="$errors->get('nip')" class="mt-2" />
                             </div>
                         </div>
-                        <div class="mb-4" x-data="userForm({{json_encode($dinas)}})">
+                        <div class="mb-4" x-data="userForm({{isset($doc) ? json_encode($dinas) : null }})">
                             <x-input-label for="dinas" :value="__('DINAS')" />
                             <div class="space-y-4">
                                 <template x-for="(row, index) in rows" :key="index">
@@ -109,7 +109,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-4" x-data="userForm({{json_encode($paraf)}})">
+                        <div class="mb-4" x-data="userForm({{isset($doc) ? json_encode($paraf) : null }})">
                             <x-input-label for="paraf" :value="__('PARAF')" />
                             <div class="space-y-4">
                                 <template x-for="(row, index) in rows" :key="index">
