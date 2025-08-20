@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="flex items-center justify-center">
+    <div class="flex flex-row items-center justify-center">
         <button @click="open = true" x-data x-on:click="$dispatch('open-signature')"
             class="px-4 py-2 bg-gray-600 text-white rounded-xl my-3">
             Buka
