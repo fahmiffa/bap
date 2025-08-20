@@ -4,9 +4,13 @@
             class="px-4 py-2 bg-gray-600 text-white rounded-xl my-3">
             Buka
         </button>
+
+        <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}" width="100%"
+            height="600px" frameborder="0">
+        </iframe>
     </div>
 
-    <div x-data="ttd({{ Js::from(md5($doc->link))}})" x-init="init()" x-on:open-signature.window="open = true">
+    <div x-data="ttd({{ Js::from(md5($doc->link)) }})" x-init="init()" x-on:open-signature.window="open = true">
         <div x-show="open" x-transition class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
             @click.self="close()">
 
