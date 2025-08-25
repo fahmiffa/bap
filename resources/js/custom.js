@@ -193,6 +193,7 @@ export function ttd(da) {
                 this.savedUrl = json.url;
                 this.open = false;
                 alert("Tanda tangan tersimpan!");
+                window.reload();
             } catch (err) {
                 console.error(err);
                 alert("Gagal menyimpan tanda tangan.");

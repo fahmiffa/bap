@@ -6,7 +6,7 @@
         </button>
 
         <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}"
-            class="w-full max-w-5xl h-[600px] mx-auto" frameborder="0"></iframe>
+            class="w-[480px] max-w-5xl h-[600px] mx-auto" frameborder="0"></iframe>
     </div>
 
 
