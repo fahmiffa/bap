@@ -5,8 +5,8 @@
             Buka
         </button>
 
-        <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}" class="w-[800px]"
-            style="height: 600px;" frameborder="0"></iframe>
+        <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}" class="min-h-screen min-w-screen md:w-[800px] md:h-[600px]"
+         frameborder="0"></iframe>
     </div>
 
     <div x-data="ttd({{ Js::from(md5($doc->link)) }})" x-init="init()" x-on:open-signature.window="open = true">
