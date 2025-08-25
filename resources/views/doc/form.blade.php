@@ -7,154 +7,187 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-8 lg:px-8 p-8">
-            <div class="my-3 font-semibold">{{ $action }}</div>
+            <div class="flex justify-between items-center px-6">
+                <div class="my-3 font-semibold text-xl">{{ $action }}</div>
+                <a href="{{ route('dashboard') }}"
+                    class="cursor-pointer my-3 bg-gray-500 text-sm hover:bg-gray-700 text-white font-bold py-2 px-3 rounded-2xl focus:outline-none focus:shadow-outline">
+                    Kembali
+                </a>
+            </div>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 w-100">
                     @isset($doc)
-                      <form action="{{ route('document.update',['id'=>md5($doc->id)]) }}" method="POST" enctype="multipart/form-data">
-                    @else
-                        <form action="{{ route('document.store') }}" method="POST" enctype="multipart/form-data">
-                    @endisset
-                        @csrf
-                        <div class="grid md:grid-cols-2 grid-cols-1 gap-2 mb-3">
-                            <div class="mb-4">
-                                <x-input-label for="nomor" :value="__('Nomor')" />
-                                <x-text-input class="block w-full" type="text" name="nomor" :value="old('nomor',isset($doc) ? $doc->nomor : null)"
-                                    required autofocus />
-                                <x-input-error :messages="$errors->get('nomor')" class="mt-2" />
-                            </div>
-                            <div class="mb-4">
-                                <x-input-label for="tanggal" :value="__('Tanggal')" />
-                                <x-text-input class="block w-full" type="date" name="tanggal" :value="old('tanggal',isset($doc) ? $doc->tanggal : null)"
-                                    required autofocus />
-                                <x-input-error :messages="$errors->get('tanggal')" class="mt-2" />
-                            </div>
-                            <div class="mb-4">
-                                <x-input-label for="pdf" :value="__('DOC')" />
-                                <input type="file" name="doc" accept="application/docx"
-                                    class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:border-0
+                        <form action="{{ route('document.update', ['id' => md5($doc->id)]) }}" method="POST"
+                            enctype="multipart/form-data">
+                        @else
+                            <form action="{{ route('document.store') }}" method="POST" enctype="multipart/form-data">
+                            @endisset
+                            @csrf
+                            <div class="grid md:grid-cols-2 grid-cols-1 gap-2 mb-3">
+                                <div class="mb-4">
+                                    <x-input-label for="nomor" :value="__('Nomor')" />
+                                    <x-text-input class="block w-full" type="text" name="nomor" :value="old('nomor', isset($doc) ? $doc->nomor : null)"
+                                        required autofocus />
+                                    <x-input-error :messages="$errors->get('nomor')" class="mt-2" />
+                                </div>
+                                <div class="mb-4">
+                                    <x-input-label for="tanggal" :value="__('Tanggal')" />
+                                    <x-text-input class="block w-full" type="date" name="tanggal" :value="old('tanggal', isset($doc) ? $doc->tanggal : null)"
+                                        required autofocus />
+                                    <x-input-error :messages="$errors->get('tanggal')" class="mt-2" />
+                                </div>
+                                <div class="mb-4">
+                                    <x-input-label for="pdf" :value="__('DOC')" />
+                                    <input type="file" name="doc" accept="application/docx"
+                                        class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:border-0
                                     file:text-sm file:font-semibold file:bg-blue-50 file:text-gray-700 
-                                    hover:file:bg-blue-100 cursor-pointer ring-2 border-gray-500 focus:outline-none focus:border-gray-500 focus:ring-gray-500 shadow-sm block mt-1 w-full rounded-2xl"
-                                    >
+                                    hover:file:bg-blue-100 cursor-pointer ring-2 border-gray-500 focus:outline-none focus:border-gray-500 focus:ring-gray-500 shadow-sm block mt-1 w-full rounded-2xl">
 
-                                <x-input-error :messages="$errors->get('pdf')" class="mt-2" />
+                                    <x-input-error :messages="$errors->get('pdf')" class="mt-2" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="grid md:grid-cols-2 grid-cols-1 gap-2">
-                            <div class="mb-4">
-                                <x-input-label for="as_head" :value="__('AS HEAD')" />
-                                <x-text-input class="block w-full" type="text" name="as_head" :value="old('as_head',isset($doc) ? $doc->as_head : null)"
-                                    required autofocus />
-                                <x-input-error :messages="$errors->get('as_head')" class="mt-2" />
+                            <div class="grid md:grid-cols-2 grid-cols-1 gap-2">
+                                <div class="mb-4">
+                                    <x-input-label for="as_head" :value="__('AS HEAD')" />
+                                    <x-text-input class="block w-full" type="text" name="as_head" :value="old('as_head', isset($doc) ? $doc->as_head : null)"
+                                        required autofocus />
+                                    <x-input-error :messages="$errors->get('as_head')" class="mt-2" />
+                                </div>
+                                <div class="mb-4">
+                                    <x-input-label for="as_name" :value="__('AS NAME')" />
+                                    <x-text-input class="block w-full" type="text" name="as_name" :value="old('as_name', isset($doc) ? $doc->as_name : null)"
+                                        required autofocus />
+                                    <x-input-error :messages="$errors->get('as_name')" class="mt-2" />
+                                </div>
+                                <div class="mb-4">
+                                    <x-input-label for="name_head" :value="__('Name Head')" />
+                                    <x-text-input class="block w-full" type="text" name="name_head"
+                                        :value="old('name_head', isset($doc) ? $doc->name_head : null)" required autofocus />
+                                    <x-input-error :messages="$errors->get('name_head')" class="mt-2" />
+                                </div>
+                                <div class="mb-4">
+                                    <x-input-label for="nip" :value="__('NIP')" />
+                                    <x-text-input class="block w-full" type="text" name="nip" :value="old('nip', isset($doc) ? $doc->nip : null)"
+                                        required autofocus />
+                                    <x-input-error :messages="$errors->get('nip')" class="mt-2" />
+                                </div>
                             </div>
-                            <div class="mb-4">
-                                <x-input-label for="as_name" :value="__('AS NAME')" />
-                                <x-text-input class="block w-full" type="text" name="as_name" :value="old('as_name',isset($doc) ? $doc->as_name : null)"
-                                    required autofocus />
-                                <x-input-error :messages="$errors->get('as_name')" class="mt-2" />
-                            </div>
-                            <div class="mb-4">
-                                <x-input-label for="name_head" :value="__('Name Head')" />
-                                <x-text-input class="block w-full" type="text" name="name_head" :value="old('name_head',isset($doc) ? $doc->name_head : null)"
-                                    required autofocus />
-                                <x-input-error :messages="$errors->get('name_head')" class="mt-2" />
-                            </div>
-                            <div class="mb-4">
-                                <x-input-label for="nip" :value="__('NIP')" />
-                                <x-text-input class="block w-full" type="text" name="nip" :value="old('nip',isset($doc) ? $doc->nip : null)"
-                                    required autofocus />
-                                <x-input-error :messages="$errors->get('nip')" class="mt-2" />
-                            </div>
-                        </div>
-                        <div class="mb-4" x-data="userForm({{isset($doc) ? json_encode($dinas) : null }})">
-                            <x-input-label for="dinas" :value="__('DINAS')" />
-                            <div class="space-y-4">
-                                <template x-for="(row, index) in rows" :key="index">
-                                    <div class="flex gap-3 items-start">
-                                        <div class="flex-1">
-                                            <textarea type="text" x-model="row.note" :name="`note[${index}]`" class="mt-1 w-full rounded-2xl border px-3 py-2"
-                                                placeholder="Catatan"></textarea>
+                            <div class="mb-4" x-data="userForm({{ isset($doc) ? json_encode($dinas) : 'null' }})">
+                                <x-input-label for="dinas" :value="__('DINAS')" />
+                                <div class="space-y-4">
+                                    <template x-for="(row, index) in rows" :key="index">
+                                        <div>
+                                            <!-- Grid Form -->
+                                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-start">
+                                                <div class="flex-1">
+                                                    <textarea x-model="row.note" :name="`note[${index}]`" class="mt-1 w-full rounded-2xl border px-3 py-2"
+                                                        placeholder="Catatan" rows="3"></textarea>
+                                                </div>
+
+                                                <div class="flex-1">
+                                                    <input type="text" x-model="row.name" :name="`name[${index}]`"
+                                                        class="mt-1 w-full rounded-2xl border px-3 py-2"
+                                                        placeholder="Nama">
+                                                </div>
+
+                                                <button type="button" @click="removeRow(index)"
+                                                    class="p-2 text-red-600">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="lucide lucide-user-round-x-icon lucide-user-round-x">
+                                                        <path d="M2 21a8 8 0 0 1 11.873-7" />
+                                                        <circle cx="10" cy="8" r="5" />
+                                                        <path d="m17 17 5 5" />
+                                                        <path d="m22 17-5 5" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+
+                                            <!-- Divider antara row -->
+                                            <template x-if="index < rows.length - 1">
+                                                <hr class="border-t border-gray-300 my-4" />
+                                            </template>
                                         </div>
+                                    </template>
 
-                                        <div class="flex-1">
-                                            <input type="text" x-model="row.name" :name="`name[${index}]`"
-                                                class="mt-1 w-full rounded-2xl border px-3 py-2" placeholder="Nama">
-                                        </div>
-
-                                        <button type="button" @click="removeRow(index)" class="p-2  text-red-600">
+                                    <!-- Tombol tambah -->
+                                    <div>
+                                        <button type="button" @click="addRow()" class="p-2 text-sm text-gray-800">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                class="lucide lucide-user-round-x-icon lucide-user-round-x">
-                                                <path d="M2 21a8 8 0 0 1 11.873-7" />
+                                                class="lucide lucide-user-round-plus-icon lucide-user-round-plus">
+                                                <path d="M2 21a8 8 0 0 1 13.292-6" />
                                                 <circle cx="10" cy="8" r="5" />
-                                                <path d="m17 17 5 5" />
-                                                <path d="m22 17-5 5" />
+                                                <path d="M19 16v6" />
+                                                <path d="M22 19h-6" />
                                             </svg>
                                         </button>
                                     </div>
-                                </template>
-                                <div>
-                                    <button type="button" @click="addRow()" class="p-2 text-sm  text-gray-800 ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="lucide lucide-user-round-plus-icon lucide-user-round-plus">
-                                            <path d="M2 21a8 8 0 0 1 13.292-6" />
-                                            <circle cx="10" cy="8" r="5" />
-                                            <path d="M19 16v6" />
-                                            <path d="M22 19h-6" />
-                                        </svg>
-                                    </button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="mb-4" x-data="userForm({{isset($doc) ? json_encode($paraf) : null }})">
-                            <x-input-label for="paraf" :value="__('PARAF')" />
-                            <div class="space-y-4">
-                                <template x-for="(row, index) in rows" :key="index">
-                                    <div class="flex gap-3 items-start">
-                                        <div class="flex-1">
-                                            <input type="text" x-model="row.note" :name="`as[${index}]`"
-                                                class="mt-1 w-full rounded-2xl border px-3 py-2" placeholder="As">
+                            <div class="mb-4" x-data="userForm({{ isset($doc) ? json_encode($paraf) : 'null' }})">
+                                <x-input-label for="paraf" :value="__('PARAF')" />
+                                <div class="space-y-4">
+                                    <template x-for="(row, index) in rows" :key="index">
+                                        <div>
+                                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-start">
+                                                <div class="flex-1">
+                                                    <input type="text" x-model="row.note" :name="`as[${index}]`"
+                                                        class="mt-1 w-full rounded-2xl border px-3 py-2"
+                                                        placeholder="As">
+                                                </div>
+                                                <div class="flex-1">
+                                                    <input type="text" x-model="row.name" :name="`nama[${index}]`"
+                                                        class="mt-1 w-full rounded-2xl border px-3 py-2"
+                                                        placeholder="Nama">
+                                                </div>
+                                                <button type="button" @click="removeRow(index)"
+                                                    class="p-2 text-red-600">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="lucide lucide-user-round-x-icon lucide-user-round-x">
+                                                        <path d="M2 21a8 8 0 0 1 11.873-7" />
+                                                        <circle cx="10" cy="8" r="5" />
+                                                        <path d="m17 17 5 5" />
+                                                        <path d="m22 17-5 5" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+
+                                            <!-- Divider hanya ditampilkan jika bukan item terakhir -->
+                                            <template x-if="index < rows.length - 1">
+                                                <hr class="border-t border-gray-300 my-4" />
+                                            </template>
                                         </div>
-                                        <div class="flex-1">
-                                            <input type="text" x-model="row.name" :name="`nama[${index}]`"
-                                                class="mt-1 w-full rounded-2xl border px-3 py-2" placeholder="Nama">
-                                        </div>
-                                        <button type="button" @click="removeRow(index)" class="p-2  text-red-600">
+                                    </template>
+
+                                    <!-- Tombol tambah row -->
+                                    <div>
+                                        <button type="button" @click="addRow()" class="p-2 text-sm text-gray-800">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                class="lucide lucide-user-round-x-icon lucide-user-round-x">
-                                                <path d="M2 21a8 8 0 0 1 11.873-7" />
-                                                <circle cx="10" cy="8" r="5" />
-                                                <path d="m17 17 5 5" />
-                                                <path d="m22 17-5 5" />
+                                                class="lucide lucide-highlighter-icon lucide-highlighter">
+                                                <path d="m9 11-6 6v3h9l3-3" />
+                                                <path
+                                                    d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4" />
                                             </svg>
                                         </button>
                                     </div>
-                                </template>
-                                <div>
-                                    <button type="button" @click="addRow()" class="p-2 text-sm  text-gray-800 ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="lucide lucide-highlighter-icon lucide-highlighter">
-                                            <path d="m9 11-6 6v3h9l3-3" />
-                                            <path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4" />
-                                        </svg>
-                                    </button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="flex items-center">
-                            <button type="submit"
-                                class="cursor-pointer  bg-gray-500 text-sm hover:bg-gray-700 text-white font-bold py-2 px-3 rounded-2xl focus:outline-none focus:shadow-outline">
-                                Simpan
-                            </button>
-                        </div>
-                    </form>
+                            <div class="flex items-center">
+                                <button type="submit"
+                                    class="cursor-pointer  bg-gray-500 text-sm hover:bg-gray-700 text-white font-bold py-2 px-3 rounded-2xl focus:outline-none focus:shadow-outline">
+                                    Simpan
+                                </button>
+                            </div>
+                        </form>
                 </div>
             </div>
         </div>
