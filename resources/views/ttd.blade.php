@@ -4,9 +4,10 @@
             class="px-4 py-2 bg-gray-600 text-white rounded-xl my-3 self-center max-w-5xl mx-auto w-full">
             Buka
         </button>
-
-        <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}"
-            class="w-[480px] max-w-5xl h-[600px] mx-auto" frameborder="0"></iframe>
+        <div class="p-8">
+            <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}"
+                class="w-[480px] max-w-5xl h-[600px] mx-auto" frameborder="0"></iframe>
+        </div>
     </div>
 
 
