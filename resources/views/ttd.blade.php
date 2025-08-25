@@ -5,7 +5,7 @@
             Buka
         </button>
 
-        <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}" class="w-full"
+        <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}" class="w-[800px]"
             style="height: 600px;" frameborder="0"></iframe>
     </div>
 
