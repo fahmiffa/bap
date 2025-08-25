@@ -1,12 +1,12 @@
 <x-guest-layout>
     <div class="flex flex-col items-center justify-center w-full px-4">
         <button @click="open = true" x-data x-on:click="$dispatch('open-signature')"
-            class="px-4 py-2 bg-gray-600 text-white rounded-xl my-3 self-center max-w-5xl mx-auto w-full">
+            class="px-4 py-2 bg-gray-600 text-white rounded-xl my-3 self-center max-w-5xl mx-auto w-25">
             Buka
         </button>
-        <div class="p-8">
+        <div class="p-8 w-full">
             <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}"
-                class="w-[480px] max-w-5xl h-[600px] mx-auto" frameborder="0"></iframe>
+                class="w-[700px] max-w-5xl h-[600px] mx-auto" frameborder="0"></iframe>
         </div>
     </div>
 
