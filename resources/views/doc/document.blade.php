@@ -37,13 +37,13 @@
                                             <div class="flex items-start gap-2">
                                                 <ul class="list-disc list-inside space-y-2 text-gray-700 text-nowrap">
                                                     @foreach ($row->users as $item)
-                                                        <li>{{ $item->name }}</li>
+                                                        <li>{{ $item->name }} ({{$item->kode}})</li>
                                                     @endforeach
                                                 </ul>
 
                                                 <ul class="list-disc list-inside space-y-2 text-gray-700 text-nowrap">
                                                     @foreach ($row->paraf as $item)
-                                                        <li>{{ $item->name }}</li>
+                                                        <li>{{ $item->name }} ({{$item->kode}})</li>
                                                     @endforeach
                                                 </ul>
                                             </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Doc;
 use App\Models\Field;
 use App\Models\Paraf;
+use App\Rules\KodeLink;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
@@ -51,18 +52,22 @@ class Home extends Controller
         $note  = $request->note;
 
         for ($i = 0; $i < count($users); $i++) {
+            $kode          = rand(10000, 99999);
             $field         = new Field;
             $field->doc_id = $doc->id;
             $field->name   = $users[$i];
             $field->value  = $note[$i];
+            $field->kode   = $kode;
             $field->save();
         }
 
         for ($i = 0; $i < count($paraf); $i++) {
+            $kod           = rand(10000, 99999);
             $field         = new Paraf;
             $field->doc_id = $doc->id;
             $field->name   = $nama[$i];
             $field->as     = $paraf[$i];
+            $field->kode   = $kod;
             $field->save();
         }
 
@@ -109,19 +114,23 @@ class Home extends Controller
 
         Field::where('doc_id', $doc->id)->delete();
         for ($i = 0; $i < count($users); $i++) {
+            $kode          = rand(10000, 99999);
             $field         = new Field;
             $field->doc_id = $doc->id;
             $field->name   = $users[$i];
             $field->value  = $note[$i];
+            $field->kode   = $kode;
             $field->save();
         }
 
         Paraf::where('doc_id', $doc->id)->delete();
         for ($i = 0; $i < count($paraf); $i++) {
+            $kod           = rand(10000, 99999);
             $field         = new Paraf;
             $field->doc_id = $doc->id;
             $field->name   = $nama[$i];
             $field->as     = $paraf[$i];
+            $field->kode   = $kod;
             $field->save();
         }
 
@@ -184,7 +193,20 @@ class Home extends Controller
             $templateProcessor->setValue("nu#{$i}", $i);
             $templateProcessor->setValue("as#{$i}", $row->as);
             $templateProcessor->setValue("name#{$i}", $row->name);
-            $templateProcessor->setValue("paraf#{$i}", $row->paraf);
+            if($row->paraf)
+            {
+                $paraf = storage_path('app/public/' . $row->paraf);
+                $templateProcessor->setImageValue("paraf#{$i}", [
+                    'path'   => $paraf,
+                    'width'  => 150,
+                    'height' => 80,
+                    'ratio'  => true,
+                ]);
+            }
+            else
+            {
+                $templateProcessor->setValue("paraf#{$i}", null);
+            }
         }
 
         $name       = $doc->nomor . '-' . date("YmdHis") . '.docx';
@@ -208,21 +230,27 @@ class Home extends Controller
     {
         $doc     = Doc::where(DB::raw('md5(link)'), $id)->firstOrFail();
         $fileUrl = Home::link($doc);
-        return view('ttd', compact('doc','fileUrl'));
+        return view('ttd', compact('doc', 'fileUrl'));
     }
 
     public function signLink(Request $request, $id)
     {
+        $doc = Doc::where(DB::raw('md5(link)'), $id)->firstOrFail();
+
         $request->validate([
             'data_url' => 'required|string',
-            'user'     => 'required|string',
+            'kode'     => ['required', new KodeLink],
         ]);
 
-        $doc = Doc::where(DB::raw('md5(link)'), $id)->firstOrFail();
+        $field = Field::where('doc_id', $doc->id)->where('kode', $request->kode)->first();
+        $paraf = Paraf::where('doc_id', $doc->id)->where('kode', $request->kode)->first();
+
+        if (! $field && ! $paraf) {
+            return response()->json(['message' => 'Kode tidak valid untuk dokumen ini.'], 422);
+        }
 
         $dataUrl = $request->input('data_url');
 
-        // format: data:image/png;base64,....
         if (! preg_match('/^data:image\/png;base64,/', $dataUrl)) {
             return response()->json(['message' => 'Invalid data URL'], 422);
         }
@@ -237,13 +265,16 @@ class Home extends Controller
         $filename = 'signatures/' . Str::random(40) . '.png';
         Storage::disk('public')->put($filename, $decoded);
 
-        $user      = Field::where('id', $request->user)->firstOrFail();
-        $user->ttd = $filename;
-        $user->save();
+        if ($field) {
+            $field->update(['ttd' => $filename]);
+        }
+
+        if ($paraf) {
+            $paraf->update(['paraf' => $filename]);
+        }
 
         return response()->json([
             'message' => 'Saved',
-            'id'      => $user->id,
             'url'     => Storage::disk('public')->url($filename),
         ]);
     }

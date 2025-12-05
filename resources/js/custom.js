@@ -83,6 +83,8 @@ import SignaturePad from "signature_pad";
 export function ttd(da) {
     return {
         user: null,
+        kode:null,
+        errors: {},
         open: false,
         signaturePad: null,
         isEmpty: true,
@@ -162,6 +164,7 @@ export function ttd(da) {
         },
 
         async save() {
+            this.errors = {};
             if (!this.signaturePad || this.signaturePad.isEmpty()) {
                 alert("Tanda tangan kosong!");
                 return;
@@ -182,8 +185,7 @@ export function ttd(da) {
                     },
                     body: JSON.stringify({
                         data_url: dataUrl,
-                        user: this.user,
-                        id: this.id,
+                        kode : this.kode,
                     }),
                 });
 
@@ -193,11 +195,52 @@ export function ttd(da) {
                 this.savedUrl = json.url;
                 this.open = false;
                 alert("Tanda tangan tersimpan!");
-                window.reload();
+                window.location.reload();
             } catch (err) {
-                console.error(err);
-                alert("Gagal menyimpan tanda tangan.");
+                if (err.errors) {
+                    this.errors = err.errors;
+                } else {
+                    console.error(err);
+                    alert(err.message || "Gagal menyimpan tanda tangan.");
+                }
             }
         },
     };
+}
+
+import { renderAsync } from "docx-preview";
+
+export function docViewer(url) {
+    return {
+        isLoading: true,
+        init() {
+            this.loadDoc();
+        },
+        async loadDoc() {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const blob = await response.blob();
+                const container = this.$refs.docContainer;
+                
+                // Clear container
+                container.innerHTML = '';
+                
+                await renderAsync(blob, container, container, {
+                    className: "docx",
+                    inWrapper: true,
+                    ignoreWidth: false,
+                    ignoreHeight: false,
+                    breakPages: true,
+                    useBase64URL: true,
+                    experimental: true,
+                });
+                this.isLoading = false;
+            } catch (error) {
+                console.error('Error loading document:', error);
+                this.$refs.docContainer.innerHTML = '<div class="text-red-500 p-4 text-center">Gagal memuat dokumen.</div>';
+                this.isLoading = false;
+            }
+        }
+    }
 }

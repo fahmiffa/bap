@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <div class="flex items-center h-min-screen">
+    <div class="flex items-center h-min-screen justify-center">
         <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}"
             width="100%" height="600px" frameborder="0">
         </iframe>
